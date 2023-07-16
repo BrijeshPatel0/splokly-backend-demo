@@ -1,0 +1,140 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "iFal API",
+        "version": "1.0.0"
+    },
+    "paths": {
+        "/api/": {},
+        "/api/auth/register": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Register Users",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string",
+                                                "example": "Bogdan"
+                                            },
+                                            "email": {
+                                                "type": "string",
+                                                "example": "bogdan.vetrov@gmail.com"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "example": "tetspassword/23"
+                                            },
+                                            "role": {
+                                                "type": "string",
+                                                "example": "student"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Created User object",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Bogdan"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "bogdan.vetrov@gmail.com"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "9"
+                                        },
+                                        "roles": {
+                                            "type": "string",
+                                            "example": "[]"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/auth/login": {
+            "post": {
+                "tags": [
+                    "Authentification"
+                ],
+                "summary": "Login Users",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "allOf": [
+                                    {
+                                        "properties": {
+                                            "email": {
+                                                "type": "string",
+                                                "example": "bogdan.vetrov@gmail.com"
+                                            },
+                                            "password": {
+                                                "type": "string",
+                                                "example": "tetspassword/23"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Loged in User object and Created API Token",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "name": {
+                                            "type": "string",
+                                            "example": "Bogdan"
+                                        },
+                                        "email": {
+                                            "type": "string",
+                                            "example": "bogdan.vetrov@gmail.com"
+                                        },
+                                        "id": {
+                                            "type": "integer",
+                                            "example": "9"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "25|m6LGpi9bKh6sV3ofjXDWWoyjS1yfqPhhTZZN9mJO"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
