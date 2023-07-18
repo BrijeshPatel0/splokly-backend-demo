@@ -28,6 +28,8 @@ Route::group(['prefix' => 'auth', 'controller' => UserAuthenticationController::
     Route::get('/login/{provider}/callback', 'handleProviderCallback');
 
     Route::post('logout', 'logout')->middleware('auth:sanctum');
+    Route::post('send-otp', 'sendOTP');
+
 });
 
 

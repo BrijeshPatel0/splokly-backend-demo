@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 /**
  * @OA\Info(
- *     title="iFal API",
+ *     title="Spokly API",
  *     version="1.0.0"
  * ),
  * @OA\PathItem(

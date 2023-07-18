@@ -17,13 +17,14 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Contracts\View\Factory as ViewFactory;
 use Illuminate\Contracts\View\View;
-
+use Twilio\Rest\Client;
 
 class UserAuthenticationController extends Controller
 {
@@ -35,6 +36,35 @@ class UserAuthenticationController extends Controller
         $this->userRepository = $userRepository;
     }
 
+    public function sendOTP(Request $request): JsonResponse
+    {
+        $country_code = $request->country_code;
+        $mobile = $request->mobile;
+        $device_id = $request->device_id;
+        $ip_address = $request->ip_address;
+        $sid = env('TWILIO_ACCOUNT_SID');
+        $token = env("TWILIO_AUTH_TOKEN");
+        $service_id = env("TWILIO_SERVICE_ID");
+        $twilio = new Client($sid, $token);
+
+        $response = $twilio->verify->v2->services($service_id)->verifications->create(
+            'whatsapp:'.$country_code.$mobile,
+            'whatsapp',
+            [
+                'rateLimit' => '{"end_user_ip_address": '.$ip_address .', "end_user_divice_id": ' . $device_id . '}'
+
+            ]
+        );
+        // Handle the response here
+        if ($response->status === 'pending') {
+            return response()->json(['success' => true,'message' => 'OTP send successfully']);
+        } else {
+            return response()->json(['success' => false,'error' => 'Error sending verification code'], 500);
+        }
+
+
+    }
+
     public function register(RegisterRequest $request): JsonResponse
     {
         $validated = $request->validated();
@@ -43,8 +73,8 @@ class UserAuthenticationController extends Controller
 
         $user->assignRole($validated['role']);
 
-         # And make sure to use the plainTextToken property
-         # Since this will return us the plain text token and then store the hashed value in the database
+        # And make sure to use the plainTextToken property
+        # Since this will return us the plain text token and then store the hashed value in the database
 
         return $this->respondWithSuccess(new UserResource($user));
     }
@@ -94,7 +124,7 @@ class UserAuthenticationController extends Controller
         $validated = $request->validate(['email' => 'required|email']);
 
         $hashedToken = PasswordResetToken::where('email', $validated['email'])->first();
-        if(!Hash::check($token, $hashedToken->token)) {
+        if (!Hash::check($token, $hashedToken->token)) {
             return $this->respondUnAuthenticated(__('Reset password token is not valid'));
         }
 
@@ -142,9 +172,9 @@ class UserAuthenticationController extends Controller
         }
 
         $url = Socialite::driver($provider)
-                        ->stateless()
-                        ->scopes(['openid'])
-                        ->redirect()->getTargetUrl();
+            ->stateless()
+            ->scopes(['openid'])
+            ->redirect()->getTargetUrl();
 
         return $this->respondWithSuccess(['redirect_url' => $url]);
     }

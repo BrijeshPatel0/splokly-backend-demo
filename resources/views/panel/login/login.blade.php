@@ -6,9 +6,9 @@
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui">
-        <meta name="description" content="iFAL APP">
-        <meta name="keywords" content="iFAL APP">
-        <meta name="author" content="iFAL APP">
+        <meta name="description" content="Spokly APP">
+        <meta name="keywords" content="Spokly APP">
+        <meta name="author" content="Spokly APP">
         <title><?= env('PROJECT_NAME') ?> Admin Login</title>
         <link rel="apple-touch-icon" href="<?= env('APP_URL').'/public/admin/' ?>/app-assets/images/ico/apple-icon-120.png">
         <link rel="shortcut icon" type="image/x-icon" href="https://pixinvent.com/bootstrap-admin-template/robust/app-assets/images/ico/favicon.ico">
